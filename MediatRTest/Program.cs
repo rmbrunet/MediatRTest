@@ -19,8 +19,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<ICustomerService, CustomerService>();
 
+builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddMediatR(typeof(Program));
-
 
 builder.Services
     .AddHttpClient(Constants.CoreApiIdentifier, httpClient => //Better type client!
@@ -32,7 +32,6 @@ builder.Services
             httpClient.DefaultRequestHeaders.Add("x-functions-key", key); // Bearer token...
         })
     .AddPolicyHandler(GetRetryPolicy());
-
 
 var app = builder.Build();
 

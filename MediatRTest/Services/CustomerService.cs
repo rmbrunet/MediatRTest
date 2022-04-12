@@ -1,6 +1,6 @@
-﻿using MediatRTest.Common;
+﻿using Flurl;
+using MediatRTest.Common;
 using MediatRTest.Model;
-using Flurl;
 
 namespace MediatRTest.Services;
 
@@ -8,6 +8,7 @@ public interface ICustomerService
 {
     Task<IEnumerable<Customer>> GetCustomers(int size);
 }
+
 public class CustomerService : ICustomerService
 {
     private readonly IHttpClientFactory factory;
@@ -27,6 +28,6 @@ public class CustomerService : ICustomerService
 
         var customers = await client.GetFromJsonAsync<IEnumerable<Customer>>(uri);
 
-        return customers??Enumerable.Empty<Customer>();
+        return customers ?? Enumerable.Empty<Customer>();
     }
 }

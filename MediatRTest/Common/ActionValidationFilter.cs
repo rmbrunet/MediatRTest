@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace MediatRTest.Common
 {
@@ -29,10 +24,9 @@ namespace MediatRTest.Common
                 {
                     var result = new ContentResult();
 
-                    var content =  System.Text.Json.JsonSerializer.Serialize(context.ModelState,  
+                    var content = System.Text.Json.JsonSerializer.Serialize(context.ModelState,
                         new JsonSerializerOptions
                         {
-                              
                         });
 
                     result.Content = content;
