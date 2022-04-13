@@ -8,44 +8,41 @@ namespace MediatRTest.Features;
 
 public class ListRecentCustomers
 {
-    public class Query : IRequest<Result2>
+    public class Query : IRequest<Result>
     {
         public Query()
         {
             Ids = Array.Empty<int>();
         }
+
         public int[] Ids { get; set; }
     }
 
-    public class Result2
+    public class Result
     {
         public IEnumerable<CustomerDto>? Customers { get; set; }
-
     }
 
-    public class QueryHandler : IRequestHandler<Query, Result2>
+    public class QueryHandler : IRequestHandler<Query, Result>
     {
         private readonly ICustomerService customerService;
-        private readonly AutoMapper.IConfigurationProvider configuration;
+        private readonly IMapper mapper;
 
-        public QueryHandler(ICustomerService customerService, AutoMapper.IConfigurationProvider configuration)
+        public QueryHandler(ICustomerService customerService, IMapper mapper)
         {
             this.customerService = customerService;
-            this.configuration = configuration;
+            this.mapper = mapper;
         }
 
-        public async Task<Result2> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-
             var customers = await this.customerService.GetCustomers(100); //Just testing
 
             customers = customers.Where(c => request.Ids.Contains(c.Id)).ToList();
 
-            var mapper = this.configuration.CreateMapper();
-
             var dtos = mapper.Map<IEnumerable<CustomerDto>>(customers);
 
-            return new Result2 { Customers = dtos };
+            return new Result { Customers = dtos };
         }
     }
 
@@ -56,7 +53,6 @@ public class ListRecentCustomers
             RuleFor(x => x.Ids).NotNull().WithMessage(m => $"You must pass at least one Id");
             RuleFor(x => x.Ids).NotEmpty().WithMessage(m => $"You must pass at least one Id");
         }
-
     }
 
     public class MappingProfile : Profile
@@ -67,5 +63,4 @@ public class ListRecentCustomers
                         .ForMember(d => d.BillingZip, opt => opt.MapFrom(c => c.BillingAddress != null ? c.BillingAddress.Zip : null))
                         .ForMember(d => d.BillingCountry, opt => opt.MapFrom(c => c.BillingAddress != null ? c.BillingAddress.Country : null));
     }
-
 }

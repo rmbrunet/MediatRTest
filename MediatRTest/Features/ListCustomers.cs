@@ -21,19 +21,17 @@ public class ListCustomers
     public class QueryHandler : IRequestHandler<Query, Result>
     {
         private readonly ICustomerService customerService;
-        private readonly AutoMapper.IConfigurationProvider configuration;
+        private readonly IMapper mapper;
 
-        public QueryHandler(ICustomerService customerService, AutoMapper.IConfigurationProvider configuration)
+        public QueryHandler(ICustomerService customerService, IMapper mapper)
         {
             this.customerService = customerService;
-            this.configuration = configuration;
+            this.mapper = mapper;
         }
 
         public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-            var customers = await this.customerService.GetCustomers(request.Size);
-
-            var mapper = this.configuration.CreateMapper();
+            var customers = await customerService.GetCustomers(request.Size);
 
             var dtos = mapper.Map<IEnumerable<CustomerDto>>(customers);
 
