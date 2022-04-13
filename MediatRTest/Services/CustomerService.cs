@@ -22,9 +22,7 @@ public class CustomerService : ICustomerService
     {
         var client = this.factory.CreateClient(Constants.CoreApiIdentifier);
 
-        var uri = new Uri("customers", UriKind.Relative);
-
-        uri.SetQueryParam("size", size);
+        var uri = "customers".SetQueryParam("size", size);
 
         var customers = await client.GetFromJsonAsync<IEnumerable<Customer>>(uri);
 
