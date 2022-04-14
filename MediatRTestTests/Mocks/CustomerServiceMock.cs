@@ -17,7 +17,7 @@ namespace MediatRTestTests.Mocks
 
             Expression<Func<ICustomerService, Task<IEnumerable<Customer>>>> call = x => x.GetCustomers(size);
 
-            mock.Setup(call).Returns(Task.FromResult(GetCustomers(size)));
+            mock.Setup(call).ReturnsAsync(GetCustomers(size));
 
             return mock;
         }
