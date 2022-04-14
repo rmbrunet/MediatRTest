@@ -17,7 +17,6 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
     {
-        options.UseAllOfForInheritance();
         options.CustomSchemaIds(x => x.FullName);
     });
 

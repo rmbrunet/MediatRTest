@@ -6,7 +6,7 @@ using MediatRTest.Services;
 
 namespace MediatRTest.Features;
 
-public class ListCustomers
+public class ListCustomersFeature
 {
     public class Query : IRequest<Result>
     {
@@ -15,7 +15,12 @@ public class ListCustomers
 
     public class Result
     {
-        public IEnumerable<CustomerDto>? Customers { get; set; }
+        public Result(IEnumerable<CustomerDto> customers)
+        {
+            Customers = customers;
+        }
+
+        public IEnumerable<CustomerDto> Customers { get; set; }
     }
 
     public class QueryHandler : IRequestHandler<Query, Result>
@@ -31,11 +36,11 @@ public class ListCustomers
 
         public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-            var customers = await customerService.GetCustomers(request.Size);
+            IEnumerable<Customer> customers = await customerService.GetCustomers(request.Size);
 
             var dtos = mapper.Map<IEnumerable<CustomerDto>>(customers);
 
-            return new Result { Customers = dtos };
+            return new Result(dtos);
         }
     }
 

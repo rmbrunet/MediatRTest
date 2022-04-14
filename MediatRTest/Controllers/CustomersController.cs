@@ -17,8 +17,8 @@ public class CustomersController
     }
 
     [HttpGet(Name = "GetCustomers")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ListCustomers.Result))]
-    public async Task<ListCustomers.Result> GetCustomers([FromQuery] ListCustomers.Query model)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ListCustomersFeature.Result))]
+    public async Task<ListCustomersFeature.Result> GetCustomers([FromQuery] ListCustomersFeature.Query model)
     {
         return await mediator.Send(model);
     }
