@@ -4,31 +4,31 @@ using MediatR;
 using Models.Customers;
 using Services.Customers;
 
-namespace MediatRTest.Features;
+namespace MediatRTest.Features.Customers;
 
-public class GetCustomersFeature
+public class GetRecentCustomersFeature
 {
-    public class Query : IRequest<Result>
-    {
-        public int Size { get; set; }
-    }
+    public record Query(int[] Ids) : IRequest<Result>;
+    //{
+    //    public Query()
+    //    {
+    //        Ids = Array.Empty<int>();
+    //    }
+
+    //    public int[] Ids { get; set; }
+    //}
 
     public class Result
     {
-        public Result(IEnumerable<Customer> customers)
-        {
-            Customers = customers;
-        }
-
-        public IEnumerable<Customer> Customers { get; set; }
+        public IEnumerable<Customer>? Customers { get; set; }
     }
 
-    public class QueryHandler : IRequestHandler<Query, Result>
+    public class Handler : IRequestHandler<Query, Result>
     {
         private readonly ICustomerService customerService;
         private readonly IMapper mapper;
 
-        public QueryHandler(ICustomerService customerService, IMapper mapper)
+        public Handler(ICustomerService customerService, IMapper mapper)
         {
             this.customerService = customerService;
             this.mapper = mapper;
@@ -36,11 +36,13 @@ public class GetCustomersFeature
 
         public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-            IEnumerable<CoreCustomer> customers = await customerService.GetCustomers(request.Size);
+            var customers = await this.customerService.GetCustomers(100); //Just testing
+
+            customers = customers.Where(c => request.Ids.Contains(c.Id)).ToList();
 
             var dtos = mapper.Map<IEnumerable<Customer>>(customers);
 
-            return new Result(dtos);
+            return new Result { Customers = dtos };
         }
     }
 
@@ -48,7 +50,8 @@ public class GetCustomersFeature
     {
         public ModelValidator()
         {
-            RuleFor(x => x.Size).GreaterThan(0).WithMessage(m => $"Size must be greater than 0. It is {m.Size}");
+            RuleFor(x => x.Ids).NotNull().WithMessage(m => $"You must pass at least one Id");
+            RuleFor(x => x.Ids).NotEmpty().WithMessage(m => $"You must pass at least one Id");
         }
     }
 

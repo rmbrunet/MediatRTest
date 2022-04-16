@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using MediatRTest.Features;
+using MediatRTest.Features.Customers;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace MediatRTest.Controllers;
 
@@ -18,15 +17,23 @@ public class CustomersController
 
     [HttpGet(Name = "GetCustomers")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCustomersFeature.Result))]
-    public async Task<GetCustomersFeature.Result> GetCustomers([FromQuery] GetCustomersFeature.Query model)
+    public async Task<GetCustomersFeature.Result> Get([FromQuery] GetCustomersFeature.Query model)
     {
         return await mediator.Send(model);
     }
 
     [HttpGet("recent", Name = "GetRecentCustomers")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetRecentCustomersFeature.Result))]
-    public async Task<GetRecentCustomersFeature.Result> GetRecentCustomers([Required, FromQuery] GetRecentCustomersFeature.Query model)
+    public async Task<GetRecentCustomersFeature.Result> Get([FromQuery] GetRecentCustomersFeature.Query model)
     {
         return await mediator.Send(model);
     }
+
+    [HttpPost (Name = "CreateCustomer")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CreateCustomerFeature.Result))]
+    public async Task<CreateCustomerFeature.Result> Post([FromBody] CreateCustomerFeature.Command command )
+    {
+        return await mediator.Send(command);
+    }
+
 }
