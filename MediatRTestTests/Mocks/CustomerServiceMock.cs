@@ -1,5 +1,7 @@
-﻿using MediatRTest.Model;
-using MediatRTest.Services;
+﻿//using MediatRTest.Model;
+//using MediatRTest.Services;
+using Models.Customers;
+using Services.Customers;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -15,23 +17,21 @@ namespace MediatRTestTests.Mocks
         {
             var mock = new Mock<ICustomerService>();
 
-            Expression<Func<ICustomerService, Task<IEnumerable<Customer>>>> call = x => x.GetCustomers(size);
+            Expression<Func<ICustomerService, Task<IEnumerable<CoreCustomer>>>> call = x => x.GetCustomers(size);
 
             mock.Setup(call).ReturnsAsync(GetCustomers(size));
 
             return mock;
         }
 
-        private static IEnumerable<Customer> GetCustomers(int size)
+
+        private static IEnumerable<CoreCustomer> GetCustomers(int size)
         {
-            if (size > 0)
-            {
-                return Enumerable.Range(1, size).Select(i => new Customer()).ToList();
-            }
-            else
-            {
-                return Array.Empty<Customer>();
-            }
+            return size switch {
+                > 0 => Enumerable.Range(1, size).Select(i => new CoreCustomer()).ToList(),
+                _ => Array.Empty<CoreCustomer>()
+            };
+           
         }
     }
 }

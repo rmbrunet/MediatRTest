@@ -25,6 +25,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MediatRTest\MediatRTest.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\Services\Services.csproj" />
   </ItemGroup>
 
 </Project>

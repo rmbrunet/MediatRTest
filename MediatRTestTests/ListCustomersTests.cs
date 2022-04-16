@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using Models.Customers;
 
 namespace MediatRTestTests
 {
@@ -16,7 +17,7 @@ namespace MediatRTestTests
 
         public ListCustomersTests()
         {
-            var config = new MapperConfiguration(c => c.AddProfile<MediatRTest.Features.ListCustomersFeature.MappingProfile>());
+            var config = new MapperConfiguration(c => c.AddProfile<MediatRTest.Features.GetCustomersFeature.MappingProfile>());
             mapper = config.CreateMapper();
         }
 
@@ -26,14 +27,14 @@ namespace MediatRTestTests
         {
             var customerService = CustomerServiceMock.GetCustomerServiceMock(5).Object;
 
-            var handler = new MediatRTest.Features.ListCustomersFeature.QueryHandler(customerService, mapper);
+            var handler = new MediatRTest.Features.GetCustomersFeature.QueryHandler(customerService, mapper);
 
-            var query = new MediatRTest.Features.ListCustomersFeature.Query() { Size = 5 };
+            var query = new MediatRTest.Features.GetCustomersFeature.Query() { Size = 5 };
 
             var result = await handler.Handle(query, CancellationToken.None);
 
             result.Should().NotBeNull();
-            result.Customers.Should().BeAssignableTo<IEnumerable<CustomerDto>>();
+            result.Customers.Should().BeAssignableTo<IEnumerable<Models.Customers.Customer>>();
         }
 
 
@@ -42,9 +43,9 @@ namespace MediatRTestTests
         {
             var customerService = CustomerServiceMock.GetCustomerServiceMock(5).Object;
 
-            var handler = new MediatRTest.Features.ListCustomersFeature.QueryHandler(customerService, mapper);
+            var handler = new MediatRTest.Features.GetCustomersFeature.QueryHandler(customerService, mapper);
 
-            var query = new MediatRTest.Features.ListCustomersFeature.Query() { Size = 5 };
+            var query = new MediatRTest.Features.GetCustomersFeature.Query() { Size = 5 };
 
             var result = await handler.Handle(query, CancellationToken.None);
 
@@ -55,9 +56,9 @@ namespace MediatRTestTests
         [Fact]
         public void ListCustomers_Should_Accept_Valid_Query()
         {
-            var query = new MediatRTest.Features.ListCustomersFeature.Query() { Size = 5 };
+            var query = new MediatRTest.Features.GetCustomersFeature.Query() { Size = 5 };
 
-            var validator = new MediatRTest.Features.ListCustomersFeature.ModelValidator();
+            var validator = new MediatRTest.Features.GetCustomersFeature.ModelValidator();
 
 
             var result = validator.Validate(query);
@@ -70,9 +71,9 @@ namespace MediatRTestTests
         [InlineData(-1)]
         public void ListCustomers_Should_Not_Accept_Invalid_Query(int size)
         {
-            var query = new MediatRTest.Features.ListCustomersFeature.Query() { Size = size };
+            var query = new MediatRTest.Features.GetCustomersFeature.Query() { Size = size };
 
-            var validator = new MediatRTest.Features.ListCustomersFeature.ModelValidator();
+            var validator = new MediatRTest.Features.GetCustomersFeature.ModelValidator();
 
 
             var result = validator.Validate(query);

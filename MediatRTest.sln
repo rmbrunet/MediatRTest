@@ -5,7 +5,11 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRTest", "MediatRTest\MediatRTest.csproj", "{1547EB6E-E0DC-4768-ACBE-AF2B4A90B9D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediatRTestTests", "MediatRTestTests\MediatRTestTests.csproj", "{950D756D-807D-4F97-B3A7-AEAFC195F6F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatRTest.UnitTests", "MediatRTestTests\MediatRTest.UnitTests.csproj", "{950D756D-807D-4F97-B3A7-AEAFC195F6F4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{860CAFE5-1D20-4327-A567-C05F36A7FCAD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{B6800E43-DB07-4D30-A6D7-71DC06814063}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{950D756D-807D-4F97-B3A7-AEAFC195F6F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{950D756D-807D-4F97-B3A7-AEAFC195F6F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{950D756D-807D-4F97-B3A7-AEAFC195F6F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{860CAFE5-1D20-4327-A567-C05F36A7FCAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{860CAFE5-1D20-4327-A567-C05F36A7FCAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{860CAFE5-1D20-4327-A567-C05F36A7FCAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{860CAFE5-1D20-4327-A567-C05F36A7FCAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6800E43-DB07-4D30-A6D7-71DC06814063}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6800E43-DB07-4D30-A6D7-71DC06814063}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6800E43-DB07-4D30-A6D7-71DC06814063}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6800E43-DB07-4D30-A6D7-71DC06814063}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

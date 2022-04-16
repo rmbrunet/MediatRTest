@@ -1,26 +1,29 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-using MediatRTest.Model;
-using MediatRTest.Services;
+//using MediatRTest.Model;
+//using MediatRTest.Services;
+
+using Models.Customers;
+using Services.Customers;
 
 namespace MediatRTest.Features;
 
-public class ListCustomersFeature
+public class GetRecentCustomersFeature
 {
     public class Query : IRequest<Result>
     {
-        public int Size { get; set; }
+        public Query()
+        {
+            Ids = Array.Empty<int>();
+        }
+
+        public int[] Ids { get; set; }
     }
 
     public class Result
     {
-        public Result(IEnumerable<CustomerDto> customers)
-        {
-            Customers = customers;
-        }
-
-        public IEnumerable<CustomerDto> Customers { get; set; }
+        public IEnumerable<Customer>? Customers { get; set; }
     }
 
     public class QueryHandler : IRequestHandler<Query, Result>
@@ -36,11 +39,13 @@ public class ListCustomersFeature
 
         public async Task<Result> Handle(Query request, CancellationToken cancellationToken)
         {
-            IEnumerable<Customer> customers = await customerService.GetCustomers(request.Size);
+            var customers = await this.customerService.GetCustomers(100); //Just testing
 
-            var dtos = mapper.Map<IEnumerable<CustomerDto>>(customers);
+            customers = customers.Where(c => request.Ids.Contains(c.Id)).ToList();
 
-            return new Result(dtos);
+            var dtos = mapper.Map<IEnumerable<Customer>>(customers);
+
+            return new Result { Customers = dtos };
         }
     }
 
@@ -48,13 +53,14 @@ public class ListCustomersFeature
     {
         public ModelValidator()
         {
-            RuleFor(x => x.Size).GreaterThan(0).WithMessage(m => $"Size must be greater than 0. It is {m.Size}");
+            RuleFor(x => x.Ids).NotNull().WithMessage(m => $"You must pass at least one Id");
+            RuleFor(x => x.Ids).NotEmpty().WithMessage(m => $"You must pass at least one Id");
         }
     }
 
     public class MappingProfile : Profile
     {
-        public MappingProfile() => CreateMap<Customer, CustomerDto>()
+        public MappingProfile() => CreateMap<CoreCustomer, Customer>()
                         .ForMember(d => d.BillingCity, opt => opt.MapFrom(c => c.BillingAddress != null ? c.BillingAddress.City : null))
                         .ForMember(d => d.BillingState, opt => opt.MapFrom(c => c.BillingAddress != null ? c.BillingAddress.State : null))
                         .ForMember(d => d.BillingZip, opt => opt.MapFrom(c => c.BillingAddress != null ? c.BillingAddress.Zip : null))

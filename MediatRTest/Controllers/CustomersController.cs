@@ -17,15 +17,15 @@ public class CustomersController
     }
 
     [HttpGet(Name = "GetCustomers")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ListCustomersFeature.Result))]
-    public async Task<ListCustomersFeature.Result> GetCustomers([FromQuery] ListCustomersFeature.Query model)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetCustomersFeature.Result))]
+    public async Task<GetCustomersFeature.Result> GetCustomers([FromQuery] GetCustomersFeature.Query model)
     {
         return await mediator.Send(model);
     }
 
     [HttpGet("recent", Name = "GetRecentCustomers")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ListRecentCustomers.Result))]
-    public async Task<ListRecentCustomers.Result> GetRecentCustomers([Required, FromQuery] ListRecentCustomers.Query model)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(GetRecentCustomersFeature.Result))]
+    public async Task<GetRecentCustomersFeature.Result> GetRecentCustomers([Required, FromQuery] GetRecentCustomersFeature.Query model)
     {
         return await mediator.Send(model);
     }
