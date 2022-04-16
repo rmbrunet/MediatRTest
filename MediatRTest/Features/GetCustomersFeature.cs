@@ -4,9 +4,6 @@ using MediatR;
 using Models.Customers;
 using Services.Customers;
 
-//using MediatRTest.Model;
-//using MediatRTest.Services;
-
 namespace MediatRTest.Features;
 
 public class GetCustomersFeature

@@ -1,7 +1,5 @@
 using FluentValidation.AspNetCore;
 using MediatR;
-using MediatRTest.Common;
-//using MediatRTest.Services;
 using Services.Customers;
 using Polly;
 using Polly.Extensions.Http;
@@ -18,7 +16,7 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
     {
-        options.CustomSchemaIds(x => x.FullName);
+        options.CustomSchemaIds(x => x.FullName?.Replace("+", "."));
     });
 
 builder.Services.AddTransient<ICustomerService, CustomerService>();
@@ -27,13 +25,13 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddMediatR(typeof(Program));
 
 builder.Services
-    .AddHttpClient(CustomerService.ApiIdentifier, httpClient => //Better type client!
+    .AddHttpClient(CustomerService.ApiIdentifier, httpClient => 
         {
             var url = builder.Configuration.GetValue<Uri>("CoreApiBaseUrl");
             var key = builder.Configuration.GetValue<string>("api-key");
 
             httpClient.BaseAddress = url;
-            httpClient.DefaultRequestHeaders.Add("x-functions-key", key); // Bearer token...
+            httpClient.DefaultRequestHeaders.Add("x-functions-key", key); 
         })
     .AddPolicyHandler(GetRetryPolicy());
 

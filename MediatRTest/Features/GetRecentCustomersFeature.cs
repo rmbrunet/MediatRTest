@@ -1,9 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using MediatR;
-//using MediatRTest.Model;
-//using MediatRTest.Services;
-
 using Models.Customers;
 using Services.Customers;
 

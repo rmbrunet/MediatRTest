@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FluentAssertions;
-using MediatRTest.Model;
 using MediatRTestTests.Mocks;
 using System.Collections.Generic;
 using System.Linq;
