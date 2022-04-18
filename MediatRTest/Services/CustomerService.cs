@@ -1,31 +1,37 @@
 ﻿using Flurl;
 using MediatRTest.Common;
 using MediatRTest.Model;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
-namespace MediatRTest.Services;
-
-public interface ICustomerService
+namespace MediatRTest.Services
 {
-    Task<IEnumerable<Customer>> GetCustomers(int size);
-}
-
-public class CustomerService : ICustomerService
-{
-    private readonly IHttpClientFactory factory;
-
-    public CustomerService(IHttpClientFactory factory)
+    public interface ICustomerService
     {
-        this.factory = factory;
+        Task<IEnumerable<Customer>> GetCustomers(int size);
     }
 
-    public async Task<IEnumerable<Customer>> GetCustomers(int size)
+    public class CustomerService : ICustomerService
     {
-        var client = this.factory.CreateClient(Constants.CoreApiIdentifier);
+        private readonly IHttpClientFactory _factory;
 
-        var uri = "customers".SetQueryParam("size", size);
+        public CustomerService(IHttpClientFactory factory)
+        {
+            _factory = factory;
+        }
 
-        var customers = await client.GetFromJsonAsync<IEnumerable<Customer>>(uri);
+        public async Task<IEnumerable<Customer>> GetCustomers(int size)
+        {
+            var client = _factory.CreateClient(Constants.CoreApiIdentifier);
 
-        return customers ?? Enumerable.Empty<Customer>();
+            var uri = "customers".SetQueryParam("size", size);
+
+            var customers = await client.GetFromJsonAsync<IEnumerable<Customer>>(uri);
+
+            return customers ?? Enumerable.Empty<Customer>();
+        }
     }
 }
