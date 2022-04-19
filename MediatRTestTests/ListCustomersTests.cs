@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentAssertions;
+using MediatRTest.Mappings;
 using MediatRTest.Model;
 using MediatRTestTests.Mocks;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace MediatRTestTests
 
         public ListCustomersTests()
         {
-            var config = new MapperConfiguration(c => c.AddProfile<MediatRTest.Features.ListCustomersFeature.MappingProfile>());
+            var config = new MapperConfiguration(c => c.AddProfile<CustomerMappingProfile>());
             mapper = config.CreateMapper();
         }
 
